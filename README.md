@@ -23,7 +23,7 @@ Requires:
 - [SoX](http://sox.sourceforge.net) (on macOS, `brew install sox`)
 
 ```
-> ./bytebeat "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7" | head -c 240000 > crowd.raw
+> ./bytebeat "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7" | head -c 8000000 > crowd.raw
 > sox -r 8000 -c 1 -t u8 crowd.raw crowd.wav
 ```
 

@@ -91,6 +91,7 @@ set(plugin_sc_files
 )
 set(plugin_schelp_files
     plugins/ByteBeat/ByteBeat.schelp
+    plugins/ByteBeat/ByteBeatController.schelp
 )
 sc_add_server_plugin(
     "ByteBeat/ByteBeat" # destination directory

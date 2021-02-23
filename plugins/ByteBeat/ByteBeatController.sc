@@ -1,13 +1,19 @@
 ByteBeatController {
-    var synth;
+    var synth, synthIndex;
 
-    *new {
-        arg synth;
-        ^super.newCopyArgs(synth);
+    *new { arg synth, synthIndex;
+        ^super.newCopyArgs(synth, synthIndex);
     }
 
-    setExpr {
-        arg input;
-        synth.server.sendMsg('/u_cmd', synth.nodeID, 0, '/set_expr', input)
+    setExpression { arg input;
+        this.sendMsg('/setexpr', input)
+    }
+
+    restart {
+        this.sendMsg('/restart')
+    }
+
+    sendMsg { arg cmd ... args;
+        synth.server.sendMsg('/u_cmd', synth.nodeID, synthIndex, cmd, *args)
     }
 }

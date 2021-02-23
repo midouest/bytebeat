@@ -1,0 +1,44 @@
+CLASS:: ByteBeatController
+SUMMARY:: Client-side interface to a ByteBeat UGen instance
+RELATED:: Classes/ByteBeat
+CATEGORIES:: Server>Abstractions
+
+DESCRIPTION::
+
+ByteBeatController is a convenience interface used to send messages to a
+ByteBeat UGen instance.
+
+CODE::
+
+SynthDef.new(\example, { Out.ar(0, ByteBeat.ar() )});
+b = ByteBeatController(Synth.new(\example), 0);
+
+// Set bytebeat expression to "crowd"
+b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7")
+
+// Reset time counter to 0
+b.restart()
+
+::
+
+CLASSMETHODS::
+
+METHOD:: new
+Create a new ByteBeatController
+
+ARGUMENT:: synth
+Synth instance to control. Must contain a ByteBeat UGen
+
+ARGUMENT:: synthIndex
+Index of the ByteBeat UGen in the synth
+
+INSTANCEMETHODS::
+
+METHOD:: setExpression
+Set the bytebeat expression used to generate audio samples.
+
+ARGUMENT:: input
+The bytebeat expression string
+
+METHOD:: restart
+Reset the bytebeat expression's time counter to 0

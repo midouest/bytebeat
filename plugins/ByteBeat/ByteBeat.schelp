@@ -1,26 +1,21 @@
-class:: ByteBeat
-summary:: A simple audio volume gain plugin
-related:: TODO
-categories:: UGens>TODO
+CLASS:: ByteBeat
+SUMMARY:: A bytebeat interpreter
+RELATED:: Classes/ByteBeatController
+CATEGORIES:: UGens>Generators>Deterministic
 
-description::
+DESCRIPTION::
 
-A bytebeat generator
+ByteBeat is able to parse simple mathematical expressions and evaluate
+them to produce audio samples.
 
+ByteBeat will not produce any audio output initially. The /setexpr unit
+command must be used to send expressions to the synth to be parsed. Once
+an expression has been parsed, it will become the active expression and
+begin producing audio samples.
 
-classmethods::
+Expressions produce samples using a monotonically increasing time
+counter. The counter can be reset to t0 using the /restart unit command.
 
-method::ar, kr
+CLASSMETHODS::
 
-argument::TODO
-
-argument::TODO
-
-
-examples::
-
-code::
-
-{ ByteBeat.ar(/* TODO */) }.play
-
-::
+METHOD:: ar

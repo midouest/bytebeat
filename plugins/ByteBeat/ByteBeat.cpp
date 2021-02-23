@@ -11,75 +11,69 @@ namespace ByteBeat
 {
     ByteBeat::ByteBeat()
     {
-        Print("ByteBeat Ctor\n");
-
         mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
 
-        exprs[0] = nullptr;
-        exprs[1] = nullptr;
+        // Initialize with no audio
+        mExpression = new bb::Constant(0);
     }
 
     ByteBeat::~ByteBeat()
     {
-        if (exprs[0])
-        {
-            delete exprs[0];
-        }
-
-        if (exprs[1])
-        {
-            delete exprs[1];
-        }
+        delete mExpression;
     }
 
-    void ByteBeat::set_expr(const char *input)
+    void ByteBeat::setExpression(const char *input)
     {
-        string s{input};
+        string s = input;
 
         try
         {
-            Expression *expr = bb::parse(s);
-            int next_gen = 1 - gen;
-            if (exprs[next_gen])
-            {
-                delete exprs[next_gen];
-            }
-            exprs[next_gen] = expr;
-            gen = next_gen;
+            bb::Expression *prevExpr = mExpression;
+            mExpression = bb::parse(s);
+            delete prevExpr;
         }
         catch (invalid_argument &ex)
         {
-            // todo: send back to client, somehow
+            // TODO: Send back to client somehow. May not be possible without a
+            //       more general sendResponse interface.
+            // See: https://scsynth.org/t/scsynth-plugincmd-and-sending-responses/2638
         }
+    }
+
+    void ByteBeat::restart()
+    {
+        mTime = 0;
     }
 
     void ByteBeat::next(int nSamples)
     {
         float *outbuf = out(0);
 
-        if (!exprs[gen])
+        for (int i = 0; i < nSamples; ++i)
         {
-            for (int i = 0; i < nSamples; ++i)
-            {
-                outbuf[i] = 0;
-            }
-        }
-        else
-        {
-            for (int i = 0; i < nSamples; ++i)
-            {
-                // todo: interpolate server sample rate and 8khz
-                uint8_t data = exprs[gen]->evaluate(t);
-                ++t;
-                outbuf[i] = 2 * (float)data / 255 - 1;
-            }
+            // TODO: Run expression at 8khz and resample to server samplerate
+            uint8_t data = mExpression->evaluate(mTime);
+            ++mTime;
+            outbuf[i] = 2 * (float)data / 255 - 1;
         }
     }
 
-    void set_expr(ByteBeat *unit, sc_msg_iter *args)
+    /**
+     * Unit command callback for the /setexpr command. Expects args to contain
+     * a single string argument representing the new bytebeat expression.
+     */
+    void setExprCmd(ByteBeat *unit, sc_msg_iter *args)
     {
-        Print("ByteBeat::set_expr u_cmd\n");
-        unit->set_expr(args->gets());
+        unit->setExpression(args->gets());
+    }
+
+    /**
+     * Unit command callback for the /restart command. Resets the bytebeat time
+     * counter to 0.
+     */
+    void restartCmd(ByteBeat *unit, sc_msg_iter *args)
+    {
+        unit->restart();
     }
 }
 
@@ -89,7 +83,6 @@ PluginLoad(ByteBeat)
 
     registerUnit<ByteBeat::ByteBeat>(ft, "ByteBeat", false);
 
-    DefineUnitCmd("ByteBeat", "/set_expr", (UnitCmdFunc)ByteBeat::set_expr);
-
-    Print("ByteBeat plugin loaded!\n");
+    DefineUnitCmd("ByteBeat", "/setexpr", (UnitCmdFunc)ByteBeat::setExprCmd);
+    DefineUnitCmd("ByteBeat", "/restart", (UnitCmdFunc)ByteBeat::restartCmd);
 }

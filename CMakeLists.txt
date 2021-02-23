@@ -39,17 +39,17 @@ endif()
 message(STATUS "Install directory set to: ${CMAKE_INSTALL_PREFIX}")
 
 # options
-option(SUPERNOVA "Build plugins for supernova" ON)
+# option(SUPERNOVA "Build plugins for supernova" ON)
 option(SCSYNTH "Build plugins for scsynth" ON)
 option(NATIVE "Optimize for native architecture" OFF)
 option(STRICT "Use strict warning flags" OFF)
-option(NOVA_SIMD "Build plugins with nova-simd support." ON)
+# option(NOVA_SIMD "Build plugins with nova-simd support." ON)
 
 # include libraries
-if (NOVA_SIMD)
-    add_definitions(-DNOVA_SIMD)
-    include_directories(${SC_PATH}/external_libraries/nova-simd)
-endif()
+# if (NOVA_SIMD)
+#     add_definitions(-DNOVA_SIMD)
+#     include_directories(${SC_PATH}/external_libraries/nova-simd)
+# endif()
 
 # bytebeat target
 set(common_cpp_files

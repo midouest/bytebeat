@@ -1,5 +1,4 @@
 #include <catch2/catch.hpp>
-
 #include "tokenize.hpp"
 
 using namespace std;

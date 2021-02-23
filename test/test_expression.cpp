@@ -1,5 +1,4 @@
 #include <catch2/catch.hpp>
-
 #include "expression.hpp"
 
 using namespace std;

@@ -9,6 +9,7 @@ namespace bb
     class Expression
     {
     public:
+        virtual ~Expression(){};
         virtual int evaluate(int t) const = 0;
         virtual string to_string() const = 0;
     };
@@ -50,6 +51,13 @@ namespace bb
     {
     public:
         explicit BinaryExpression(Expression *left, Expression *right) : left(left), right(right){};
+
+        ~BinaryExpression()
+        {
+            delete left;
+            delete right;
+        }
+
         string to_string() const
         {
             return "(" + left->to_string() + operand() + right->to_string() + ")";

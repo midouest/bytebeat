@@ -1,5 +1,4 @@
 #include <catch2/catch.hpp>
-
 #include "parse.hpp"
 
 using namespace std;

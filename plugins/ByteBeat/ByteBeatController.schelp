@@ -9,15 +9,15 @@ ByteBeatController is a convenience interface used to send messages to a
 ByteBeat UGen instance.
 
 CODE::
+(
+SynthDef.new(\bytebeat, { arg out;
+    Out.ar(out, ByteBeat.ar())
+}).add;
+)
 
-SynthDef.new(\example, { Out.ar(0, ByteBeat.ar() )});
-b = ByteBeatController(Synth.new(\example), 0);
-
-// Set bytebeat expression to "crowd"
-b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7")
-
-// Reset time counter to 0
-b.restart()
+b = ByteBeatController(Synth.new(\bytebeat));
+b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
+b.restart();
 
 ::
 

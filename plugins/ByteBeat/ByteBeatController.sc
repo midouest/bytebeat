@@ -8,6 +8,6 @@ ByteBeatController {
 
     setExpr {
         arg input;
-        synth.server.sendMsg('/u_cmd', synth.nodeID, 0, "set_expr", input);
+        synth.server.sendMsg('/u_cmd', synth.nodeID, 0, '/set_expr', input)
     }
 }

@@ -15,8 +15,7 @@ namespace ByteBeat
 
         mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
 
-        string s{"((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7"};
-        exprs[0] = bb::parse(s);
+        exprs[0] = nullptr;
         exprs[1] = nullptr;
     }
 
@@ -80,11 +79,11 @@ namespace ByteBeat
     void set_expr(ByteBeat *unit, sc_msg_iter *args)
     {
         Print("ByteBeat::set_expr u_cmd\n");
-        // unit->set_expr(args->gets());
+        unit->set_expr(args->gets());
     }
 }
 
-PluginLoad(ByteBeatUGens)
+PluginLoad(ByteBeat)
 {
     ft = inTable;
 

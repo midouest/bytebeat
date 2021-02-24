@@ -10,12 +10,12 @@ ByteBeat UGen instance.
 
 CODE::
 (
-SynthDef.new(\bytebeat, { arg out;
-    Out.ar(out, ByteBeat.ar())
+SynthDef.new(\bytebeat, {
+    Out.ar(0, ByteBeat.ar())
 }).add;
 )
 
-b = ByteBeatController(Synth.new(\bytebeat));
+b = ByteBeatController(Synth.new(\bytebeat), 0);
 b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
 b.restart();
 
@@ -39,6 +39,11 @@ Set the bytebeat expression used to generate audio samples.
 
 ARGUMENT:: input
 The bytebeat expression string
+
+ARGUMENT:: restart
+Optionally reset the bytebeat expression's time counter 0 when setting the new
+expression. 1 will reset the counter, 0 will preserve the time counter. Defaults
+to 0.
 
 METHOD:: restart
 Reset the bytebeat expression's time counter to 0

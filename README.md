@@ -41,12 +41,12 @@ UGen to be parsed and evaluated.
 
 ```
 (
-SynthDef.new(\bytebeat, { arg out;
-    Out.ar(out, ByteBeat.ar())
+SynthDef.new(\bytebeat, {
+    Out.ar(0, ByteBeat.ar())
 }).add;
 )
 
-b = ByteBeatController(Synth.new(\bytebeat));
+b = ByteBeatController(Synth.new(\bytebeat), 0);
 
 b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
 ```

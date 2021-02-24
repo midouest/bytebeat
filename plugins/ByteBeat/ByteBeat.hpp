@@ -42,6 +42,12 @@ namespace ByteBeat
          * samples.
          */
         void next(int nSamples);
+        inline float sampleByteBeat() const;
+
+        float mSampleStep;
+        float mAccumulator = 0;
+        float mPrevSample = 0;
+        float mNextSample = 0;
 
         /** Time counter passed to the bytebeat expression */
         int mTime = 0;

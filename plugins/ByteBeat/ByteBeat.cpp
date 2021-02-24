@@ -5,16 +5,22 @@
 #include "ByteBeat.hpp"
 #include "parse.hpp"
 
+#define BYTEBEAT_SAMPLERATE 8000
+
 static InterfaceTable *ft;
 
 namespace ByteBeat
 {
-    ByteBeat::ByteBeat()
+    ByteBeat::ByteBeat() : mSampleStep(BYTEBEAT_SAMPLERATE / sampleRate())
     {
         mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
 
-        // Initialize with no audio
-        mExpression = new bb::Constant(0);
+        // Initialize with no audio to avoid popping/unitialized buffer.
+        // Expressions are evaluated as 32-bit signed integers, then cast to
+        // 8-bit unsigned integers, then transformed to floats with a range of
+        // +/-1.0. An expression that emits a constant value of 128 will
+        // correspond roughly to 0.0 at the output.
+        mExpression = new bb::Constant(128);
     }
 
     ByteBeat::~ByteBeat()
@@ -30,10 +36,12 @@ namespace ByteBeat
         {
             bb::Expression *prevExpr = mExpression;
             mExpression = bb::parse(s);
+            // mNextSample = sampleByteBeat();
             delete prevExpr;
         }
         catch (invalid_argument &ex)
         {
+            Print("%s", ex.what());
             // TODO: Send back to client somehow. May not be possible without a
             //       more general sendResponse interface.
             // See: https://scsynth.org/t/scsynth-plugincmd-and-sending-responses/2638
@@ -51,11 +59,24 @@ namespace ByteBeat
 
         for (int i = 0; i < nSamples; ++i)
         {
-            // TODO: Run expression at 8khz and resample to server samplerate
-            uint8_t data = mExpression->evaluate(mTime);
-            ++mTime;
-            outbuf[i] = 2 * (float)data / 255 - 1;
+            float data = lininterp(mAccumulator, mPrevSample, mNextSample);
+            outbuf[i] = data;
+
+            mAccumulator += mSampleStep;
+            if (mAccumulator >= 1)
+            {
+                mAccumulator -= 1;
+                ++mTime;
+                mPrevSample = mNextSample;
+                mNextSample = sampleByteBeat();
+            }
         }
+    }
+
+    inline float ByteBeat::sampleByteBeat() const
+    {
+        uint8_t sample = mExpression->evaluate(mTime);
+        return 2 * (float)sample / 255 - 1;
     }
 
     /**
@@ -65,6 +86,10 @@ namespace ByteBeat
     void setExprCmd(ByteBeat *unit, sc_msg_iter *args)
     {
         unit->setExpression(args->gets());
+        if (args->geti(1))
+        {
+            unit->restart();
+        }
     }
 
     /**

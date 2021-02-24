@@ -1,6 +1,7 @@
 #include <SC_PlugIn.hpp>
 
 #include <string>
+#include <stdexcept>
 
 #include "ByteBeat.hpp"
 #include "parse.hpp"
@@ -36,7 +37,7 @@ namespace ByteBeat
         {
             bb::Expression *prevExpr = mExpression;
             mExpression = bb::parse(s);
-            // mNextSample = sampleByteBeat();
+            mNextSample = sampleByteBeat();
             delete prevExpr;
         }
         catch (invalid_argument &ex)

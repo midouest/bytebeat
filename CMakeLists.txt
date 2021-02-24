@@ -1,5 +1,5 @@
 # basic project config
-cmake_minimum_required(VERSION 3.19)
+cmake_minimum_required(VERSION 3.7)
 set(project_name "bytebeat")
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake_modules ${CMAKE_MODULE_PATH})
 set(CMAKE_CXX_STANDARD 11)
@@ -44,6 +44,8 @@ option(SCSYNTH "Build plugins for scsynth" ON)
 option(NATIVE "Optimize for native architecture" OFF)
 option(STRICT "Use strict warning flags" OFF)
 # option(NOVA_SIMD "Build plugins with nova-simd support." ON)
+option(CLI "Build command-line tool" ON)
+option(TEST "Build Catch2 test cases" ON)
 
 # include libraries
 # if (NOVA_SIMD)
@@ -51,33 +53,38 @@ option(STRICT "Use strict warning flags" OFF)
 #     include_directories(${SC_PATH}/external_libraries/nova-simd)
 # endif()
 
-# bytebeat target
 set(common_cpp_files
     src/parse.cpp
     src/tokenize.cpp
 )
-add_executable(
-    bytebeat
-    src/main.cpp
-    ${common_cpp_files}
-)
-target_include_directories(bytebeat PRIVATE include)
+
+# bytebeat target
+if(CLI)
+    add_executable(
+        bytebeat
+        src/main.cpp
+        ${common_cpp_files}
+    )
+    target_include_directories(bytebeat PRIVATE include)
+endif()
 
 # test_bytebeat target
-set(test_cpp_files
-    test/test_expression.cpp
-    test/test_parse.cpp
-    test/test_tokenize.cpp
-)
-find_package(Catch2 REQUIRED)
-add_executable(
-    test_bytebeat
-    test/test.cpp
-    ${common_cpp_files}
-    ${test_cpp_files}
-)
-target_include_directories(test_bytebeat PRIVATE include)
-target_link_libraries(test_bytebeat PRIVATE Catch2::Catch2)
+if(TEST)
+    set(test_cpp_files
+        test/test_expression.cpp
+        test/test_parse.cpp
+        test/test_tokenize.cpp
+    )
+    find_package(Catch2 REQUIRED)
+    add_executable(
+        test_bytebeat
+        test/test.cpp
+        ${common_cpp_files}
+        ${test_cpp_files}
+    )
+    target_include_directories(test_bytebeat PRIVATE include)
+    target_link_libraries(test_bytebeat PRIVATE Catch2::Catch2)
+endif()
 
 # SuperCollider targets
 set(plugin_cpp_files

@@ -6,6 +6,7 @@ A [bytebeat](https://arxiv.org/abs/1112.1368) interpreter and [SuperCollider](ht
 
 Requires:
 
+- [CMake 3.7+](https://cmake.org)
 - [SuperCollider Source](https://github.com/supercollider/supercollider)
 - [Catch2](https://github.com/catchorg/Catch2) (on macOS, `brew install catch2`)
 
@@ -35,20 +36,20 @@ $ make install
 ## SuperCollider Usage
 
 Initially, the UGen will not produce any audio. A `ByteBeatController` instance
-should be used to wrap the synth containing the `ByteBeat` UGen. The `setExpression`
+should be used to wrap the synth containing the `ByteBeat` UGen. The `eval`
 instance method can then be used to send a bytebeat expression string to the
 UGen to be parsed and evaluated.
 
 ```
 (
 SynthDef.new(\bytebeat, {
-    Out.ar(0, ByteBeat.ar())
+    var t = PulseCount.ar(Impulse.ar(8000));
+    Out.ar(0, ByteBeat.ar(t).dup)
 }).add;
 )
 
-b = ByteBeatController(Synth.new(\bytebeat), 0);
-
-b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
+b = ByteBeatController(Synth.new(\bytebeat), 2);
+b.eval("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
 ```
 
 ## Command Line Usage

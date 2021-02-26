@@ -11,12 +11,13 @@ Requires:
 - [Catch2](https://github.com/catchorg/Catch2) (on macOS, `brew install catch2`)
 
 ```
-$ mkdir build
-$ cd build
-$ cmake .. -DSC_PATH=/path/to/supercollider -DCMAKE_INSTALL_PREFIX=/path/to/extensions
-$ make
-$ ./test_bytebeat
-$ make install
+$ cmake -Bbuild -H. \
+  -DSC_PATH=/path/to/supercollider \
+  -DCMAKE_INSTALL_PREFIX=/path/to/extensions \
+  -DCMAKE_BUILD_TYPE=RELEASE
+$ cmake --build build/ --target test_bytebeat
+$ ./build/test_bytebeat
+$ cmake --build build/ --target install
 ```
 
 `/path/to/supercollider` is the path to the root of your SuperCollider source installation.
@@ -63,9 +64,9 @@ $ ./bytebeat "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7" | head -
 $ sox -r 8000 -c 1 -t u8 crowd.raw crowd.wav
 ```
 
-## Performance
+## Benchmarks
 
-Benchmarked on a 13-inch M1 MacBook Pro (2020)
+Host: 13-inch M1 MacBook Pro (2020)
 
 ```
 ...............................................................................
@@ -81,4 +82,22 @@ parse crowd                                    100             5     1.7205 ms
 eval crowd                                     100           615     1.6605 ms
                                         27.3658 ns    27.3508 ns     27.382 ns
                                       0.0791974 ns  0.0684235 ns  0.0937675 ns
+```
+
+Host: Raspberry Pi 3 Model B+
+
+```
+...............................................................................
+
+benchmark name                       samples       iterations    estimated
+                                     mean          low mean      high mean
+                                     std dev       low std dev   high std dev
+-------------------------------------------------------------------------------
+parse crowd                                    100             3    20.427 ms
+                                          68.03 us     67.885 us    68.377 us
+                                          1.098 us        485 ns     1.907 us
+
+eval crowd                                     100           557   15.1504 ms
+                                            281 ns        279 ns       284 ns
+                                             13 ns          9 ns        18 ns
 ```

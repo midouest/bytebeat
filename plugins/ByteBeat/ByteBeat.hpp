@@ -10,13 +10,13 @@ namespace ByteBeat
      * ByteBeat is able to parse simple mathematical expressions and evaluate
      * them to produce audio samples.
      *
-     * ByteBeat will not produce any audio output initially. The /setexpr unit
+     * ByteBeat will not produce any audio output initially. The /eval unit
      * command must be used to send expressions to the synth to be parsed. Once
      * an expression has been parsed, it will become the active expression and
      * begin producing audio samples.
      *
-     * Expressions produce samples using a monotonically increasing time
-     * counter. The counter can be reset to t0 using the /restart unit command.
+     * ByteBeat expects a single audio-rate input, "t", that is passed to the
+     * expression.
      */
     class ByteBeat : public SCUnit
     {
@@ -31,26 +31,12 @@ namespace ByteBeat
          */
         void setExpression(const char *input);
 
-        /**
-         * Reset the bytebeat time counter to zero.
-         */
-        void restart();
-
     private:
         /**
          * Evaluate the current bytebeat expression for the given number of
          * samples.
          */
         void next(int nSamples);
-        inline float sampleByteBeat() const;
-
-        float mSampleStep;
-        float mAccumulator = 0;
-        float mPrevSample = 0;
-        float mNextSample = 0;
-
-        /** Time counter passed to the bytebeat expression */
-        int mTime = 0;
 
         /** bytebeat expression used to generate audio samples */
         bb::Expression *mExpression;

@@ -5,12 +5,8 @@ ByteBeatController {
         ^super.newCopyArgs(synth, synthIndex);
     }
 
-    setExpression { arg input, restart = 0;
-        this.sendMsg('/setexpr', input, restart)
-    }
-
-    restart {
-        this.sendMsg('/restart')
+    eval { arg expression;
+        this.sendMsg('/eval', expression)
     }
 
     sendMsg { arg cmd ... args;

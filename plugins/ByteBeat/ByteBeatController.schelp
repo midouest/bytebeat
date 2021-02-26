@@ -11,13 +11,13 @@ ByteBeat UGen instance.
 CODE::
 (
 SynthDef.new(\bytebeat, {
-    Out.ar(0, ByteBeat.ar())
+    var t = PulseCount.ar(Impulse.ar(8000));
+    Out.ar(0, ByteBeat.ar(t).dup)
 }).add;
 )
 
-b = ByteBeatController(Synth.new(\bytebeat), 0);
-b.setExpression("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
-b.restart();
+b = ByteBeatController(Synth.new(\bytebeat), 2);
+b.eval("((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7");
 
 ::
 
@@ -34,16 +34,8 @@ Index of the ByteBeat UGen in the synth
 
 INSTANCEMETHODS::
 
-METHOD:: setExpression
+METHOD:: eval
 Set the bytebeat expression used to generate audio samples.
 
-ARGUMENT:: input
+ARGUMENT:: expression
 The bytebeat expression string
-
-ARGUMENT:: restart
-Optionally reset the bytebeat expression's time counter 0 when setting the new
-expression. 1 will reset the counter, 0 will preserve the time counter. Defaults
-to 0.
-
-METHOD:: restart
-Reset the bytebeat expression's time counter to 0

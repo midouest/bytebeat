@@ -19,3 +19,6 @@ counter. The counter can be reset to t0 using the /restart unit command.
 CLASSMETHODS::
 
 METHOD:: ar
+
+ARGUMENT:: t
+Value of the "t" variable sent to the bytebeat expression

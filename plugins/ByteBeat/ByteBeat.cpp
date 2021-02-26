@@ -12,7 +12,7 @@ static InterfaceTable *ft;
 
 namespace ByteBeat
 {
-    ByteBeat::ByteBeat() : mSampleStep(BYTEBEAT_SAMPLERATE / sampleRate())
+    ByteBeat::ByteBeat()
     {
         mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
 
@@ -37,7 +37,6 @@ namespace ByteBeat
         {
             bb::Expression *prevExpr = mExpression;
             mExpression = bb::parse(s);
-            mNextSample = sampleByteBeat();
             delete prevExpr;
         }
         catch (invalid_argument &ex)
@@ -49,57 +48,26 @@ namespace ByteBeat
         }
     }
 
-    void ByteBeat::restart()
-    {
-        mTime = 0;
-    }
-
     void ByteBeat::next(int nSamples)
     {
-        float *outbuf = out(0);
+        const float *tBuf = in(0);
+        float *outBuf = out(0);
 
         for (int i = 0; i < nSamples; ++i)
         {
-            float data = lininterp(mAccumulator, mPrevSample, mNextSample);
-            outbuf[i] = data;
-
-            mAccumulator += mSampleStep;
-            if (mAccumulator >= 1)
-            {
-                mAccumulator -= 1;
-                ++mTime;
-                mPrevSample = mNextSample;
-                mNextSample = sampleByteBeat();
-            }
+            int t = tBuf[i];
+            uint8_t sample = mExpression->evaluate(t);
+            outBuf[i] = 2 * (float)sample / 255 - 1;
         }
     }
 
-    inline float ByteBeat::sampleByteBeat() const
-    {
-        uint8_t sample = mExpression->evaluate(mTime);
-        return 2 * (float)sample / 255 - 1;
-    }
-
     /**
-     * Unit command callback for the /setexpr command. Expects args to contain
+     * Unit command callback for the /eval command. Expects args to contain
      * a single string argument representing the new bytebeat expression.
      */
-    void setExprCmd(ByteBeat *unit, sc_msg_iter *args)
+    void evalCmd(ByteBeat *unit, sc_msg_iter *args)
     {
         unit->setExpression(args->gets());
-        if (args->geti(1))
-        {
-            unit->restart();
-        }
-    }
-
-    /**
-     * Unit command callback for the /restart command. Resets the bytebeat time
-     * counter to 0.
-     */
-    void restartCmd(ByteBeat *unit, sc_msg_iter *args)
-    {
-        unit->restart();
     }
 }
 
@@ -109,6 +77,5 @@ PluginLoad(ByteBeat)
 
     registerUnit<ByteBeat::ByteBeat>(ft, "ByteBeat", false);
 
-    DefineUnitCmd("ByteBeat", "/setexpr", (UnitCmdFunc)ByteBeat::setExprCmd);
-    DefineUnitCmd("ByteBeat", "/restart", (UnitCmdFunc)ByteBeat::restartCmd);
+    DefineUnitCmd("ByteBeat", "/eval", (UnitCmdFunc)ByteBeat::evalCmd);
 }

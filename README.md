@@ -62,3 +62,23 @@ Requires:
 $ ./bytebeat "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7" | head -c 8000000 > crowd.raw
 $ sox -r 8000 -c 1 -t u8 crowd.raw crowd.wav
 ```
+
+## Performance
+
+Benchmarked on a 13-inch M1 MacBook Pro (2020)
+
+```
+...............................................................................
+
+benchmark name                       samples       iterations    estimated
+                                     mean          low mean      high mean
+                                     std dev       low std dev   high std dev
+-------------------------------------------------------------------------------
+parse crowd                                    100             5     1.7205 ms
+                                        4.06055 us    3.81938 us    4.37245 us
+                                        1.38736 us    1.14322 us    1.68179 us
+
+eval crowd                                     100           615     1.6605 ms
+                                        27.3658 ns    27.3508 ns     27.382 ns
+                                      0.0791974 ns  0.0684235 ns  0.0937675 ns
+```

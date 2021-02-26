@@ -58,6 +58,9 @@ namespace ByteBeat
             int t = tBuf[i];
             float sample;
 
+            // In most cases, the t input will change slower than the sample
+            // rate. Save some cycles by only evaluating the expression when
+            // t changes.
             if (t == mPrevT)
             {
                 sample = mPrevSample;

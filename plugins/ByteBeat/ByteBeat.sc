@@ -4,6 +4,9 @@ ByteBeat : UGen {
     }
 
     checkInputs {
+        if (inputs.at(0).rate != 'audio') {
+            ^("t input is not audio rate: " + inputs.at(0) + inputs.at(0).rate);
+        }
         ^this.checkValidInputs;
     }
 }

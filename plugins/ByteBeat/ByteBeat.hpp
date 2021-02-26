@@ -29,7 +29,7 @@ namespace ByteBeat
          * Does not replace the existing expression if the incoming expression
          * cannot be parsed.
          */
-        void setExpression(const char *input);
+        void parse(const char *input);
 
     private:
         /**
@@ -37,6 +37,9 @@ namespace ByteBeat
          * samples.
          */
         void next(int nSamples);
+
+        float mPrevSample = 0;
+        int mPrevT = 0;
 
         /** bytebeat expression used to generate audio samples */
         bb::Expression *mExpression;

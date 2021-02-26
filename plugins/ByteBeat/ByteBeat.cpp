@@ -29,7 +29,7 @@ namespace ByteBeat
         delete mExpression;
     }
 
-    void ByteBeat::setExpression(const char *input)
+    void ByteBeat::parse(const char *input)
     {
         string s = input;
 
@@ -56,8 +56,18 @@ namespace ByteBeat
         for (int i = 0; i < nSamples; ++i)
         {
             int t = tBuf[i];
-            uint8_t sample = mExpression->evaluate(t);
-            outBuf[i] = 2 * (float)sample / 255 - 1;
+            if (t == mPrevT)
+            {
+                outBuf[i] = mPrevSample;
+            }
+            else
+            {
+                uint8_t byte = mExpression->evaluate(t);
+                float sample = 2 * (float)byte / 255 - 1;
+                outBuf[i] = sample;
+                mPrevT = t;
+                mPrevSample = sample;
+            }
         }
     }
 
@@ -67,7 +77,7 @@ namespace ByteBeat
      */
     void evalCmd(ByteBeat *unit, sc_msg_iter *args)
     {
-        unit->setExpression(args->gets());
+        unit->parse(args->gets());
     }
 }
 

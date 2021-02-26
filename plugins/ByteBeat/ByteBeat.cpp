@@ -21,12 +21,7 @@ namespace ByteBeat
         // 8-bit unsigned integers, then transformed to floats with a range of
         // +/-1.0. An expression that emits a constant value of 128 will
         // correspond roughly to 0.0 at the output.
-        mExpression = new bb::Constant(128);
-    }
-
-    ByteBeat::~ByteBeat()
-    {
-        delete mExpression;
+        mExpression = bb::ExpressionPtr(new bb::Constant(128));
     }
 
     void ByteBeat::parse(const char *input)
@@ -35,9 +30,7 @@ namespace ByteBeat
 
         try
         {
-            bb::Expression *prevExpr = mExpression;
             mExpression = bb::parse(s);
-            delete prevExpr;
         }
         catch (invalid_argument &ex)
         {

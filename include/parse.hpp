@@ -8,5 +8,5 @@ using namespace std;
 
 namespace bb
 {
-    Expression *parse(string &input);
+    ExpressionPtr parse(string &input);
 }

@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
     }
 
     string input{argv[1]};
-    Expression *expr;
+    ExpressionPtr expr;
     try
     {
         expr = parse(input);

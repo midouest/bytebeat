@@ -11,7 +11,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("simple expression")
     {
         string input = "t+1";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "(t+1)");
         REQUIRE(expr->evaluate(2) == 3);
     }
@@ -19,7 +19,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("simple expression w/o parentheses")
     {
         string input = "t+2*t";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "(t+(2*t))");
         REQUIRE(expr->evaluate(2) == 6);
     }
@@ -27,7 +27,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("simple expression w/ parentheses")
     {
         string input = "(t+1)*t";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "((t+1)*t)");
         REQUIRE(expr->evaluate(2) == 6);
     }
@@ -59,7 +59,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("atomic expression")
     {
         string input = "t";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "t");
         REQUIRE(expr->evaluate(42) == 42);
     }
@@ -67,7 +67,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("multiple expressions")
     {
         string input = "(t+3)|(t*2)";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "((t+3)|(t*2))");
         REQUIRE(expr->evaluate(1) == 6);
     }
@@ -75,7 +75,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("precedence")
     {
         string input = "t*2+t*3";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "((t*2)+(t*3))");
         REQUIRE(expr->evaluate(1) == 5);
     }
@@ -83,7 +83,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("deep nesting")
     {
         string input = "(((t*t)))";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr->to_string() == "(t*t)");
         REQUIRE(expr->evaluate(2) == 4);
     }
@@ -91,7 +91,7 @@ TEST_CASE("parse", "[parse]")
     SECTION("parse crowd")
     {
         string input = "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7";
-        Expression *expr = parse(input);
+        auto expr = parse(input);
         REQUIRE(expr);
     }
 
@@ -104,7 +104,7 @@ TEST_CASE("parse", "[parse]")
             return parse(input);
         };
 
-        Expression *crowd = parse(input);
+        auto crowd = parse(input);
         CHECK(crowd);
         int t = 0;
 

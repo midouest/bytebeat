@@ -7,17 +7,17 @@ namespace bb
 {
     using TokenIter = vector<string>::iterator;
 
-    Expression *parse_expression(TokenIter &it, TokenIter &end);
-    Expression *parse_expression_inner(TokenIter &it,
-                                       TokenIter &end,
-                                       Expression *lhs,
-                                       int min_precedence);
-    Expression *parse_primary(TokenIter &it, TokenIter &end);
+    ExpressionPtr parse_expression(TokenIter &it, TokenIter &end);
+    ExpressionPtr parse_expression_inner(TokenIter &it,
+                                         TokenIter &end,
+                                         ExpressionPtr lhs,
+                                         int min_precedence);
+    ExpressionPtr parse_primary(TokenIter &it, TokenIter &end);
 
     int get_precedence(string &token);
-    Expression *make_binary_op(string &op, Expression *lhs, Expression *rhs);
+    ExpressionPtr make_binary_op(string &op, ExpressionPtr lhs, ExpressionPtr rhs);
 
-    Expression *parse(string &input)
+    ExpressionPtr parse(string &input)
     {
         vector<string> tokens = tokenize(input);
         if (tokens.empty())
@@ -27,7 +27,7 @@ namespace bb
 
         auto it = tokens.begin();
         auto end = tokens.end();
-        Expression *expr = parse_expression(it, end);
+        ExpressionPtr expr = parse_expression(it, end);
         if (it != tokens.end())
         {
             throw invalid_argument("not all tokens consumed");
@@ -36,16 +36,16 @@ namespace bb
         return expr;
     }
 
-    Expression *parse_expression(TokenIter &it, TokenIter &end)
+    ExpressionPtr parse_expression(TokenIter &it, TokenIter &end)
     {
-        Expression *lhs = parse_primary(it, end);
-        return parse_expression_inner(it, end, lhs, 0);
+        ExpressionPtr lhs = parse_primary(it, end);
+        return parse_expression_inner(it, end, move(lhs), 0);
     }
 
-    Expression *parse_expression_inner(TokenIter &it,
-                                       TokenIter &end,
-                                       Expression *lhs,
-                                       int min_precedence)
+    ExpressionPtr parse_expression_inner(TokenIter &it,
+                                         TokenIter &end,
+                                         ExpressionPtr lhs,
+                                         int min_precedence)
     {
         if (it == end)
         {
@@ -60,10 +60,10 @@ namespace bb
             string op = lookahead;
             ++it;
 
-            Expression *rhs = parse_primary(it, end);
+            ExpressionPtr rhs = parse_primary(it, end);
             if (it == end)
             {
-                return make_binary_op(op, lhs, rhs);
+                return make_binary_op(op, move(lhs), move(rhs));
             }
 
             lookahead = *it;
@@ -71,7 +71,7 @@ namespace bb
 
             while (next_precedence > precedence)
             {
-                rhs = parse_expression_inner(it, end, rhs, next_precedence);
+                rhs = parse_expression_inner(it, end, move(rhs), next_precedence);
                 if (it == end)
                 {
                     next_precedence = -1;
@@ -83,13 +83,13 @@ namespace bb
             }
 
             precedence = next_precedence;
-            lhs = make_binary_op(op, lhs, rhs);
+            lhs = make_binary_op(op, move(lhs), move(rhs));
         }
 
         return lhs;
     }
 
-    Expression *parse_primary(TokenIter &it, TokenIter &end)
+    ExpressionPtr parse_primary(TokenIter &it, TokenIter &end)
     {
         if (it == end)
         {
@@ -101,7 +101,7 @@ namespace bb
         if (token == "t")
         {
             ++it;
-            return new Variable();
+            return ExpressionPtr(new Variable());
         }
 
         if (token == "(")
@@ -120,7 +120,7 @@ namespace bb
         {
             int n = stoi(token);
             ++it;
-            return new Constant(n);
+            return ExpressionPtr(new Constant(n));
         }
         catch (invalid_argument &ex)
         {
@@ -166,86 +166,86 @@ namespace bb
         return -1;
     }
 
-    Expression *make_binary_op(std::string &op, Expression *lhs, Expression *rhs)
+    ExpressionPtr make_binary_op(std::string &op, ExpressionPtr lhs, ExpressionPtr rhs)
     {
         if (op == "+")
         {
-            return new Add(lhs, rhs);
+            return ExpressionPtr(new Add(move(lhs), move(rhs)));
         }
 
         if (op == "-")
         {
-            return new Subtract(lhs, rhs);
+            return ExpressionPtr(new Subtract(move(lhs), move(rhs)));
         }
 
         if (op == "*")
         {
-            return new Multiply(lhs, rhs);
+            return ExpressionPtr(new Multiply(move(lhs), move(rhs)));
         }
 
         if (op == "/")
         {
-            return new Divide(lhs, rhs);
+            return ExpressionPtr(new Divide(move(lhs), move(rhs)));
         }
 
         if (op == "%")
         {
-            return new Modulo(lhs, rhs);
+            return ExpressionPtr(new Modulo(move(lhs), move(rhs)));
         }
 
         if (op == "&")
         {
-            return new BitwiseAnd(lhs, rhs);
+            return ExpressionPtr(new BitwiseAnd(move(lhs), move(rhs)));
         }
 
         if (op == "|")
         {
-            return new BitwiseOr(lhs, rhs);
+            return ExpressionPtr(new BitwiseOr(move(lhs), move(rhs)));
         }
 
         if (op == "^")
         {
-            return new BitwiseXor(lhs, rhs);
+            return ExpressionPtr(new BitwiseXor(move(lhs), move(rhs)));
         }
 
         if (op == "<<")
         {
-            return new BitwiseShiftLeft(lhs, rhs);
+            return ExpressionPtr(new BitwiseShiftLeft(move(lhs), move(rhs)));
         }
 
         if (op == ">>")
         {
-            return new BitwiseShiftRight(lhs, rhs);
+            return ExpressionPtr(new BitwiseShiftRight(move(lhs), move(rhs)));
         }
 
         if (op == "<")
         {
-            return new LessThan(lhs, rhs);
+            return ExpressionPtr(new LessThan(move(lhs), move(rhs)));
         }
 
         if (op == ">")
         {
-            return new GreaterThan(lhs, rhs);
+            return ExpressionPtr(new GreaterThan(move(lhs), move(rhs)));
         }
 
         if (op == "<=")
         {
-            return new LessThanOrEqual(lhs, rhs);
+            return ExpressionPtr(new LessThanOrEqual(move(lhs), move(rhs)));
         }
 
         if (op == ">=")
         {
-            return new GreaterThanOrEqual(lhs, rhs);
+            return ExpressionPtr(new GreaterThanOrEqual(move(lhs), move(rhs)));
         }
 
         if (op == "==")
         {
-            return new Equal(lhs, rhs);
+            return ExpressionPtr(new Equal(move(lhs), move(rhs)));
         }
 
         if (op == "!=")
         {
-            return new NotEqual(lhs, rhs);
+            return ExpressionPtr(new NotEqual(move(lhs), move(rhs)));
         }
 
         throw invalid_argument("unrecognized operator");

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 using namespace std;
 
@@ -13,6 +14,8 @@ namespace bb
         virtual int evaluate(int t) const = 0;
         virtual string to_string() const = 0;
     };
+
+    using ExpressionPtr = unique_ptr<Expression>;
 
     class Variable : public Expression
     {
@@ -50,13 +53,7 @@ namespace bb
     class BinaryExpression : public Expression
     {
     public:
-        explicit BinaryExpression(Expression *left, Expression *right) : left(left), right(right){};
-
-        ~BinaryExpression()
-        {
-            delete left;
-            delete right;
-        }
+        explicit BinaryExpression(ExpressionPtr left, ExpressionPtr right) : left(move(left)), right(move(right)){};
 
         string to_string() const
         {
@@ -66,8 +63,8 @@ namespace bb
     protected:
         virtual string operand() const = 0;
 
-        Expression *left;
-        Expression *right;
+        ExpressionPtr left;
+        ExpressionPtr right;
     };
 
     class Add : public BinaryExpression

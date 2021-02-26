@@ -22,7 +22,6 @@ namespace ByteBeat
     {
     public:
         ByteBeat();
-        ~ByteBeat();
 
         /**
          * Parse the incoming expression and replace the existing expression.
@@ -42,6 +41,6 @@ namespace ByteBeat
         int mPrevT = 0;
 
         /** bytebeat expression used to generate audio samples */
-        bb::Expression *mExpression;
+        bb::ExpressionPtr mExpression;
     };
 }

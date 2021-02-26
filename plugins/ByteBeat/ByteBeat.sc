@@ -1,6 +1,6 @@
 ByteBeat : UGen {
-    *ar { arg t;
-        ^this.multiNew('audio', t);
+    *ar { arg t=0.0, mul=1.0, add=0.0;
+        ^this.multiNew('audio', t, mul, add).madd(mul, add);
     }
 
     checkInputs {

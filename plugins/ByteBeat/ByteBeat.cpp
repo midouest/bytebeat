@@ -56,18 +56,21 @@ namespace ByteBeat
         for (int i = 0; i < nSamples; ++i)
         {
             int t = tBuf[i];
+            float sample;
+
             if (t == mPrevT)
             {
-                outBuf[i] = mPrevSample;
+                sample = mPrevSample;
             }
             else
             {
                 uint8_t byte = mExpression->evaluate(t);
-                float sample = 2 * (float)byte / 255 - 1;
-                outBuf[i] = sample;
+                sample = 2 * (float)byte / 255 - 1;
                 mPrevT = t;
                 mPrevSample = sample;
             }
+
+            outBuf[i] = sample;
         }
     }
 

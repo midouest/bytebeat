@@ -74,7 +74,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) + this->right->evaluate(t);
+            return left->evaluate(t) + right->evaluate(t);
         };
 
     protected:
@@ -91,7 +91,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) - this->right->evaluate(t);
+            return left->evaluate(t) - right->evaluate(t);
         };
 
     protected:
@@ -108,7 +108,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) * this->right->evaluate(t);
+            return left->evaluate(t) * right->evaluate(t);
         };
 
     protected:
@@ -125,13 +125,13 @@ namespace bb
 
         int evaluate(int t) const
         {
-            int divisor = this->right->evaluate(t);
+            int divisor = right->evaluate(t);
             // Dividing by zero will crash the SuperCollider server
             if (divisor == 0)
             {
                 return 0;
             }
-            return this->left->evaluate(t) / divisor;
+            return left->evaluate(t) / divisor;
         };
 
     protected:
@@ -148,7 +148,14 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) % this->right->evaluate(t);
+
+            int divisor = right->evaluate(t);
+            // Dividing by zero will crash the SuperCollider server
+            if (divisor == 0)
+            {
+                return 0;
+            }
+            return left->evaluate(t) % divisor;
         };
 
     protected:
@@ -165,7 +172,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) & this->right->evaluate(t);
+            return left->evaluate(t) & right->evaluate(t);
         };
 
     protected:
@@ -182,7 +189,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) | this->right->evaluate(t);
+            return left->evaluate(t) | right->evaluate(t);
         };
 
     protected:
@@ -199,7 +206,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) ^ this->right->evaluate(t);
+            return left->evaluate(t) ^ right->evaluate(t);
         };
 
     protected:
@@ -216,7 +223,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) << this->right->evaluate(t);
+            return left->evaluate(t) << right->evaluate(t);
         };
 
     protected:
@@ -233,7 +240,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) >> this->right->evaluate(t);
+            return left->evaluate(t) >> right->evaluate(t);
         };
 
     protected:
@@ -250,7 +257,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) < this->right->evaluate(t);
+            return left->evaluate(t) < right->evaluate(t);
         };
 
     protected:
@@ -267,7 +274,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) > this->right->evaluate(t);
+            return left->evaluate(t) > right->evaluate(t);
         };
 
     protected:
@@ -284,7 +291,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) <= this->right->evaluate(t);
+            return left->evaluate(t) <= right->evaluate(t);
         };
 
     protected:
@@ -301,7 +308,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) >= this->right->evaluate(t);
+            return left->evaluate(t) >= right->evaluate(t);
         };
 
     protected:
@@ -318,7 +325,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) == this->right->evaluate(t);
+            return left->evaluate(t) == right->evaluate(t);
         };
 
     protected:
@@ -335,7 +342,7 @@ namespace bb
 
         int evaluate(int t) const
         {
-            return this->left->evaluate(t) != this->right->evaluate(t);
+            return left->evaluate(t) != right->evaluate(t);
         };
 
     protected:

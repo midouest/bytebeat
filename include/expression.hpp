@@ -50,10 +50,10 @@ namespace bb
         int c;
     };
 
-    class BinaryExpression : public Expression
+    class BinaryOperator : public Expression
     {
     public:
-        explicit BinaryExpression(ExpressionPtr left, ExpressionPtr right) : left(move(left)), right(move(right)){};
+        explicit BinaryOperator(ExpressionPtr left, ExpressionPtr right) : left(move(left)), right(move(right)){};
 
         string to_string() const
         {
@@ -67,10 +67,10 @@ namespace bb
         ExpressionPtr right;
     };
 
-    class Add : public BinaryExpression
+    class Add : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -84,10 +84,10 @@ namespace bb
         }
     };
 
-    class Subtract : public BinaryExpression
+    class Subtract : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -101,10 +101,10 @@ namespace bb
         }
     };
 
-    class Multiply : public BinaryExpression
+    class Multiply : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -118,10 +118,10 @@ namespace bb
         }
     };
 
-    class Divide : public BinaryExpression
+    class Divide : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -141,10 +141,10 @@ namespace bb
         }
     };
 
-    class Modulo : public BinaryExpression
+    class Modulo : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -165,10 +165,10 @@ namespace bb
         }
     };
 
-    class BitwiseAnd : public BinaryExpression
+    class BitwiseAnd : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -182,10 +182,10 @@ namespace bb
         }
     };
 
-    class BitwiseOr : public BinaryExpression
+    class BitwiseOr : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -199,10 +199,10 @@ namespace bb
         }
     };
 
-    class BitwiseXor : public BinaryExpression
+    class BitwiseXor : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -216,10 +216,10 @@ namespace bb
         }
     };
 
-    class BitwiseShiftLeft : public BinaryExpression
+    class BitwiseShiftLeft : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -233,10 +233,10 @@ namespace bb
         }
     };
 
-    class BitwiseShiftRight : public BinaryExpression
+    class BitwiseShiftRight : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -250,10 +250,10 @@ namespace bb
         }
     };
 
-    class LessThan : public BinaryExpression
+    class LessThan : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -267,10 +267,10 @@ namespace bb
         }
     };
 
-    class GreaterThan : public BinaryExpression
+    class GreaterThan : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -284,10 +284,10 @@ namespace bb
         }
     };
 
-    class LessThanOrEqual : public BinaryExpression
+    class LessThanOrEqual : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -301,10 +301,10 @@ namespace bb
         }
     };
 
-    class GreaterThanOrEqual : public BinaryExpression
+    class GreaterThanOrEqual : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -318,10 +318,10 @@ namespace bb
         }
     };
 
-    class Equal : public BinaryExpression
+    class Equal : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {
@@ -335,10 +335,10 @@ namespace bb
         }
     };
 
-    class NotEqual : public BinaryExpression
+    class NotEqual : public BinaryOperator
     {
     public:
-        using BinaryExpression::BinaryExpression;
+        using BinaryOperator::BinaryOperator;
 
         int evaluate(int t) const
         {

@@ -7,5 +7,5 @@ using namespace std;
 
 namespace bb
 {
-    vector<string> tokenize(string &input);
+    vector<string> lex(string &input);
 }

@@ -2,7 +2,7 @@
 #include <vector>
 #include <stdexcept>
 
-#include "tokenize.hpp"
+#include "lex.hpp"
 
 using namespace std;
 
@@ -11,7 +11,7 @@ namespace bb
     bool is_whitespace(char c);
     bool is_terminal(char c);
 
-    vector<string> tokenize(string &input)
+    vector<string> lex(string &input)
     {
         vector<string> tokens;
 

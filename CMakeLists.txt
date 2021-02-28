@@ -55,7 +55,7 @@ option(TEST "Build Catch2 test cases" ON)
 
 set(common_cpp_files
     src/parse.cpp
-    src/tokenize.cpp
+    src/lex.cpp
 )
 
 # bytebeat target
@@ -72,8 +72,8 @@ endif()
 if(TEST)
     set(test_cpp_files
         test/test_expression.cpp
+        test/test_lex.cpp
         test/test_parse.cpp
-        test/test_tokenize.cpp
     )
     find_package(Catch2 REQUIRED)
     add_executable(

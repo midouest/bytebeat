@@ -1,51 +1,51 @@
 #include <catch2/catch.hpp>
-#include "tokenize.hpp"
+#include "lex.hpp"
 
 using namespace std;
 using namespace bb;
 
-TEST_CASE("tokenize empty input", "[tokenize]")
+TEST_CASE("lex empty input", "[lex]")
 {
     string input = "";
-    REQUIRE(tokenize(input).empty());
+    REQUIRE(lex(input).empty());
 }
 
-TEST_CASE("single-char tokens", "[tokenize]")
+TEST_CASE("single-char tokens", "[lex]")
 {
     string input = "t()+-*/%&|^";
     vector<string> expected = {"t", "(", ")", "+", "-", "*", "/", "%", "&", "|", "^"};
-    REQUIRE(tokenize(input) == expected);
+    REQUIRE(lex(input) == expected);
 }
 
-TEST_CASE("whitespace", "[tokenize]")
+TEST_CASE("whitespace", "[lex]")
 {
     string input = " ( t ) ";
     vector<string> expected = {"(", "t", ")"};
-    REQUIRE(tokenize(input) == expected);
+    REQUIRE(lex(input) == expected);
 }
 
-TEST_CASE("integers", "[tokenize]")
+TEST_CASE("integers", "[lex]")
 {
     string input = "(t+1)";
     vector<string> expected = {"(", "t", "+", "1", ")"};
-    REQUIRE(tokenize(input) == expected);
+    REQUIRE(lex(input) == expected);
 }
 
-TEST_CASE("multi-digit integers", "[tokenize]")
+TEST_CASE("multi-digit integers", "[lex]")
 {
     string input = "t&63";
     vector<string> expected = {"t", "&", "63"};
-    REQUIRE(tokenize(input) == expected);
+    REQUIRE(lex(input) == expected);
 }
 
-TEST_CASE("multi-char tokens", "[tokenize]")
+TEST_CASE("multi-char tokens", "[lex]")
 {
     string input = "t>>1";
     vector<string> expected = {"t", ">>", "1"};
-    REQUIRE(tokenize(input) == expected);
+    REQUIRE(lex(input) == expected);
 }
 
-TEST_CASE("tokenize crowd", "[tokenize]")
+TEST_CASE("lex crowd", "[lex]")
 {
     std::string input = "((t<<1)^((t<<1)+(t>>7)&t>>12))|t>>(4-(1^7&(t>>19)))|t>>7";
     std::vector<std::string> expected = {
@@ -97,5 +97,5 @@ TEST_CASE("tokenize crowd", "[tokenize]")
         ">>",
         "7",
     };
-    REQUIRE(bb::tokenize(input) == expected);
+    REQUIRE(bb::lex(input) == expected);
 }

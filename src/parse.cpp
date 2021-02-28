@@ -1,5 +1,5 @@
 #include "parse.hpp"
-#include "tokenize.hpp"
+#include "lex.hpp"
 
 #include <iostream>
 
@@ -19,7 +19,7 @@ namespace bb
 
     ExpressionPtr parse(string &input)
     {
-        vector<string> tokens = tokenize(input);
+        vector<string> tokens = lex(input);
         if (tokens.empty())
         {
             throw invalid_argument("no tokens to parse");

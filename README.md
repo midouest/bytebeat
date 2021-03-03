@@ -96,11 +96,11 @@ benchmark name                       samples       iterations    estimated
                                      mean          low mean      high mean
                                      std dev       low std dev   high std dev
 -------------------------------------------------------------------------------
-parse crowd                                    100             3    20.427 ms
-                                          68.03 us     67.885 us    68.377 us
-                                          1.098 us        485 ns     1.907 us
+parse crowd                                    100            6   15.3318 ms
+                                         25.808 us    25.268 us    26.657 us
+                                          3.385 us     2.349 us     4.555 us
 
-eval crowd                                     100           557   15.1504 ms
-                                            281 ns        279 ns       284 ns
-                                             13 ns          9 ns        18 ns
+eval crowd                                     100          347   15.3027 ms
+                                            440 ns       432 ns       453 ns
+                                             49 ns        32 ns        68 ns
 ```

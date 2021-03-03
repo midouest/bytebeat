@@ -35,7 +35,7 @@ $ cmake --build build/ --target install
 - Bitwise operators: ​`&, |, ^, <<, >>, ~`
 - Relational operators: `<, >, <=, >=, ==, !=, !`
 - Array subscript operator: `[]`
-- Ternary if operator: `?, :`
+- Ternary if operator: `?:`
 
 ## SuperCollider Usage
 

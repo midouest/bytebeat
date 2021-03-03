@@ -71,7 +71,7 @@ endif()
 # test_bytebeat target
 if(TEST)
     set(test_cpp_files
-        test/test_expression.cpp
+        test/test_ast.cpp
         test/test_lex.cpp
         test/test_parse.cpp
     )

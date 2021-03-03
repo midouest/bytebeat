@@ -1,12 +1,14 @@
 #pragma once
 
-#include <string>
+#include "ast.hpp"
 
-#include "expression.hpp"
+#include <string>
 
 using namespace std;
 
 namespace bb
 {
-    ExpressionPtr parse(string &input);
-}
+
+AstPtr parse(const string &tokens);
+
+} // namespace bb

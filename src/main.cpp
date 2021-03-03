@@ -11,19 +11,22 @@ int main(int argc, char *argv[])
     {
         cout << endl;
         cout << "  usage:" << endl;
-        cout << "    ./bytebeat [EXPRESSION] | head -c [BYTES] > [OUT].raw" << endl;
+        cout << "    ./bytebeat [EXPRESSION] | head -c [BYTES] > [OUT].raw"
+             << endl;
         cout << endl;
         cout << "  expression tokens:" << endl;
         cout << "    t" << endl;
+        cout << "    1, -1, 0xf, \"foo\"" << endl;
         cout << "    ( ) + - * / %" << endl;
-        cout << "    & | ^ << >>" << endl;
-        cout << "    < > <= >= == !=" << endl;
+        cout << "    & | ^ << >> ~" << endl;
+        cout << "    < > <= >= == != ! ? :" << endl;
+        cout << "    [ ]" << endl;
         cout << endl;
         return 1;
     }
 
     string input{argv[1]};
-    ExpressionPtr expr;
+    AstPtr expr;
     try
     {
         expr = parse(input);
@@ -37,6 +40,6 @@ int main(int argc, char *argv[])
     int t = 0;
     while (true)
     {
-        putchar(expr->evaluate(t++));
+        putchar(expr->eval(t++).to_int());
     }
 }

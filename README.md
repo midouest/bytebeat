@@ -30,9 +30,12 @@ $ cmake --build build/ --target install
 
 - One expression only
 - Only one pre-defined variable: `t`
+- Integers (+/-), strings
 - Mathematic operators: ​`(), +, -, *, /, %`
-- Bitwise operators: ​`&, |, ^, <<, >>`
-- Relational operators: `<, >, <=, >=, ==, !=`
+- Bitwise operators: ​`&, |, ^, <<, >>, ~`
+- Relational operators: `<, >, <=, >=, ==, !=, !`
+- Array subscript operator: `[]`
+- Ternary if operator: `?, :`
 
 ## SuperCollider Usage
 
@@ -75,13 +78,13 @@ benchmark name                       samples       iterations    estimated
                                      mean          low mean      high mean
                                      std dev       low std dev   high std dev
 -------------------------------------------------------------------------------
-parse crowd                                    100             5     1.7205 ms
-                                        4.06055 us    3.81938 us    4.37245 us
-                                        1.38736 us    1.14322 us    1.68179 us
+parse crowd                                    100             7     1.8942 ms
+                                        2.82587 us    2.79468 us    2.97907 us
+                                        305.722 ns    7.57781 ns    729.356 ns
 
-eval crowd                                     100           615     1.6605 ms
-                                        27.3658 ns    27.3508 ns     27.382 ns
-                                      0.0791974 ns  0.0684235 ns  0.0937675 ns
+eval crowd                                     100           456     1.6872 ms
+                                        36.8993 ns    36.8727 ns    36.9713 ns
+                                       0.208576 ns  0.0980819 ns   0.445346 ns
 ```
 
 Host: Raspberry Pi 3 Model B+

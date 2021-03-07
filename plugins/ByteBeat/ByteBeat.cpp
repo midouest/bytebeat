@@ -15,19 +15,14 @@ namespace ByteBeat
 ByteBeat::ByteBeat()
 {
     mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
-
-    // Initialize with no audio to avoid popping/unitialized buffer. The
-    // Undefined expression will be evaluated as 0.0 when sampled.
-    mAst = bb::AstPtr(new bb::Undefined());
 }
 
 void ByteBeat::parse(const char *input)
 {
     string s = input;
-
     try
     {
-        mAst = bb::parse(s);
+        mInterpreter.parse(s);
     }
     catch (invalid_argument &ex)
     {
@@ -46,33 +41,7 @@ void ByteBeat::next(int nSamples)
 
     for (int i = 0; i < nSamples; ++i)
     {
-        int t = tBuf[i];
-        float sample;
-
-        // In most cases, the t input will change slower than the sample
-        // rate. Save some cycles by only evaluating the expression when
-        // t changes.
-        if (t == mPrevT)
-        {
-            sample = mPrevSample;
-        }
-        else
-        {
-            bb::Value val = mAst->eval(t);
-            if (val.is_int())
-            {
-                uint8_t byte = val.to_int();
-                sample = 2 * (float)byte / 255 - 1;
-            }
-            else
-            {
-                sample = 0;
-            }
-            mPrevT = t;
-            mPrevSample = sample;
-        }
-
-        outBuf[i] = sample;
+        outBuf[i] = mInterpreter.eval(tBuf[i]);
     }
 }
 

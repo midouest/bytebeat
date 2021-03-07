@@ -2,7 +2,7 @@
 
 #include <SC_PlugIn.hpp>
 
-#include "ast.hpp"
+#include "interpreter.hpp"
 
 namespace ByteBeat
 {
@@ -37,10 +37,6 @@ private:
      */
     void next(int nSamples);
 
-    float mPrevSample = 0;
-    int mPrevT = 0;
-
-    /** bytebeat expression used to generate audio samples */
-    bb::AstPtr mAst;
+    bb::Interpreter mInterpreter;
 };
 } // namespace ByteBeat

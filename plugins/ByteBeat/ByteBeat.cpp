@@ -10,17 +10,12 @@ static InterfaceTable *ft;
 
 namespace ByteBeat
 {
-ByteBeat::ByteBeat()
-{
-    mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
-}
 
-void ByteBeat::parse(const char *input)
+void InterpreterUnit::parse(const char *input)
 {
-    string s = input;
     try
     {
-        mInterpreter.parse(s);
+        mInterpreter.parse(string{input});
     }
     catch (invalid_argument &ex)
     {
@@ -32,7 +27,28 @@ void ByteBeat::parse(const char *input)
     }
 }
 
+ByteBeat::ByteBeat()
+{
+    mCalcFunc = make_calc_function<ByteBeat, &ByteBeat::next>();
+}
+
 void ByteBeat::next(int nSamples)
+{
+    const float *tBuf = in(0);
+    float *outBuf = out(0);
+
+    for (int i = 0; i < nSamples; ++i)
+    {
+        outBuf[i] = mInterpreter.eval(tBuf[i]);
+    }
+}
+
+ByteGrain::ByteGrain()
+{
+    mCalcFunc = make_calc_function<ByteGrain, &ByteGrain::next>();
+}
+
+void ByteGrain::next(int nSamples)
 {
     const float *tBuf = in(0);
     float *outBuf = out(0);
@@ -47,7 +63,11 @@ void ByteBeat::next(int nSamples)
  * Unit command callback for the /eval command. Expects args to contain
  * a single string argument representing the new bytebeat expression.
  */
-void evalCmd(ByteBeat *unit, sc_msg_iter *args) { unit->parse(args->gets()); }
+void evalCmd(InterpreterUnit *unit, sc_msg_iter *args)
+{
+    unit->parse(args->gets());
+}
+
 } // namespace ByteBeat
 
 PluginLoad(ByteBeat)
@@ -55,6 +75,8 @@ PluginLoad(ByteBeat)
     ft = inTable;
 
     registerUnit<ByteBeat::ByteBeat>(ft, "ByteBeat", false);
+    registerUnit<ByteBeat::ByteGrain>(ft, "ByteGrain", false);
 
     DefineUnitCmd("ByteBeat", "/eval", (UnitCmdFunc)ByteBeat::evalCmd);
+    DefineUnitCmd("ByteGrain", "/eval", (UnitCmdFunc)ByteBeat::evalCmd);
 }

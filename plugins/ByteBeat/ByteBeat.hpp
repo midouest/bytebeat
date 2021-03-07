@@ -6,6 +6,21 @@
 
 namespace ByteBeat
 {
+
+class InterpreterUnit : public SCUnit
+{
+public:
+    /**
+     * Parse the incoming expression and replace the existing expression.
+     * Does not replace the existing expression if the incoming expression
+     * cannot be parsed.
+     */
+    void parse(const char *input);
+
+protected:
+    bb::Interpreter mInterpreter;
+};
+
 /**
  * ByteBeat is able to parse simple mathematical expressions and evaluate
  * them to produce audio samples.
@@ -18,17 +33,10 @@ namespace ByteBeat
  * ByteBeat expects a single audio-rate input, "t", that is passed to the
  * expression.
  */
-class ByteBeat : public SCUnit
+class ByteBeat : public InterpreterUnit
 {
 public:
     ByteBeat();
-
-    /**
-     * Parse the incoming expression and replace the existing expression.
-     * Does not replace the existing expression if the incoming expression
-     * cannot be parsed.
-     */
-    void parse(const char *input);
 
 private:
     /**
@@ -36,7 +44,19 @@ private:
      * samples.
      */
     void next(int nSamples);
-
-    bb::Interpreter mInterpreter;
 };
+
+class ByteGrain : public InterpreterUnit
+{
+public:
+    ByteGrain();
+
+private:
+    /**
+     * Evaluate the current bytebeat expression for the given number of
+     * samples.
+     */
+    void next(int nSamples);
+};
+
 } // namespace ByteBeat

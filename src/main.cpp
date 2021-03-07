@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
     int t = 0;
     while (true)
     {
+        // TODO: check for undefined
         putchar(expr->eval(t++).to_int());
     }
 }

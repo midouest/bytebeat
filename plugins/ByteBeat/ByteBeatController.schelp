@@ -1,6 +1,6 @@
 CLASS:: ByteBeatController
 SUMMARY:: Client-side interface to a ByteBeat UGen instance
-RELATED:: Classes/ByteBeat
+RELATED:: Classes/ByteBeat, Classes/ByteGrain
 CATEGORIES:: Server>Abstractions
 
 DESCRIPTION::

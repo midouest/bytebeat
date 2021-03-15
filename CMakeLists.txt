@@ -54,7 +54,6 @@ option(TEST "Build Catch2 test cases" ON)
 # endif()
 
 set(common_cpp_files
-    src/interpreter.cpp
     src/parse.cpp
     src/lex.cpp
 )

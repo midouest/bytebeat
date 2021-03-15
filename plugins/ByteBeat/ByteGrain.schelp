@@ -1,0 +1,21 @@
+CLASS:: ByteGrain
+SUMMARY:: A bytebeat granulator
+RELATED:: Classes/ByteBeatController, Classes/ByteBeat
+CATEGORIES:: UGens>Generators>Granular
+
+DESCRIPTION::
+
+TODO
+
+CLASSMETHODS::
+
+METHOD:: ar
+
+ARGUMENT:: t
+Value of the "t" variable sent to the bytebeat expression.
+
+ARGUMENT:: mul
+Output will be multiplied by this value.
+
+ARGUMENT:: add
+This value will be added to the output.

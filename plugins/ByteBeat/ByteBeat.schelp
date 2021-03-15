@@ -1,6 +1,6 @@
 CLASS:: ByteBeat
 SUMMARY:: A bytebeat interpreter
-RELATED:: Classes/ByteBeatController
+RELATED:: Classes/ByteBeatController, Classes/ByteGrain
 CATEGORIES:: UGens>Generators>Deterministic
 
 DESCRIPTION::

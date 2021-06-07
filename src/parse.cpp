@@ -1,6 +1,8 @@
 #include "parse.hpp"
 #include "lex.hpp"
 
+#include <stdexcept>
+
 namespace bb
 {
 

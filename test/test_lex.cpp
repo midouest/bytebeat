@@ -1,5 +1,5 @@
-#define CATCH_CONFIG_ENABLE_BENCHMARKING
-#include <catch2/catch.hpp>
+// #define CATCH_CONFIG_ENABLE_BENCHMARKING
+#include <catch2/catch_all.hpp>
 
 #include "lex.hpp"
 

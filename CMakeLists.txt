@@ -75,7 +75,7 @@ if(TEST)
         test/test_lex.cpp
         test/test_parse.cpp
     )
-    find_package(Catch2 REQUIRED)
+    find_package(catch2 REQUIRED)
     add_executable(
         test_bytebeat
         test/test.cpp
@@ -83,7 +83,7 @@ if(TEST)
         ${test_cpp_files}
     )
     target_include_directories(test_bytebeat PRIVATE include)
-    target_link_libraries(test_bytebeat PRIVATE Catch2::Catch2)
+    target_link_libraries(test_bytebeat PRIVATE Catch2::Catch2WithMain)
 endif()
 
 # SuperCollider targets

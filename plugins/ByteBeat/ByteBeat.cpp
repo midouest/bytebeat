@@ -6,8 +6,6 @@
 #include "ByteBeat.hpp"
 #include "parse.hpp"
 
-#define BYTEBEAT_SAMPLERATE 8000
-
 static InterfaceTable *ft;
 
 namespace ByteBeat
